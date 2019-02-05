@@ -1,0 +1,112 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for eu.recred:fidouafsvc:war:ci
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 197, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building FIDOUAF REST API Service ci
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ fidouafsvc ---
+[INFO] Deleting D:\Projs\Spring\fido-uaf-playground\fidouafsvc\target
+[INFO] 
+[INFO] --- buildnumber-maven-plugin:1.1:create (default) @ fidouafsvc ---
+[INFO] Checking for local modifications: skipped.
+[INFO] Updating project files from SCM: skipped.
+[INFO] Executing: cmd.exe /X /C "git rev-parse --verify HEAD"
+[INFO] Working directory: D:\Projs\Spring\fido-uaf-playground\fidouafsvc
+[INFO] Storing buildNumber: null at timestamp: 1473679530212
+[INFO] Executing: cmd.exe /X /C "git rev-parse --verify HEAD"
+[INFO] Working directory: D:\Projs\Spring\fido-uaf-playground\fidouafsvc
+[INFO] Storing buildScmBranch: UNKNOWN_BRANCH
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ fidouafsvc ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ fidouafsvc ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 38 source files to D:\Projs\Spring\fido-uaf-playground\fidouafsvc\target\classes
+[WARNING] /D:/Projs/Spring/fido-uaf-playground/fidouafsvc/src/main/java/eu/recred/fidouafsvc/dao/TrustedFacetDao.java: Some input files use unchecked or unsafe operations.
+[WARNING] /D:/Projs/Spring/fido-uaf-playground/fidouafsvc/src/main/java/eu/recred/fidouafsvc/dao/TrustedFacetDao.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ fidouafsvc ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ fidouafsvc ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 10 source files to D:\Projs\Spring\fido-uaf-playground\fidouafsvc\target\test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.19.1:test (default-test) @ fidouafsvc ---
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running eu.recred.fidouafsvc.controller.AuthenticationIdTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.051 sec <<< FAILURE! - in eu.recred.fidouafsvc.controller.AuthenticationIdTest
+initializationError(eu.recred.fidouafsvc.controller.AuthenticationIdTest)  Time elapsed: 0.004 sec  <<< ERROR!
+java.lang.Exception: No runnable methods
+
+Running eu.recred.fidouafsvc.dao.RegistrationRecordDaoTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.001 sec <<< FAILURE! - in eu.recred.fidouafsvc.dao.RegistrationRecordDaoTest
+initializationError(eu.recred.fidouafsvc.dao.RegistrationRecordDaoTest)  Time elapsed: 0.001 sec  <<< ERROR!
+java.lang.Exception: No runnable methods
+
+Running eu.recred.fidouafsvc.dao.StorageDaoTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0 sec <<< FAILURE! - in eu.recred.fidouafsvc.dao.StorageDaoTest
+initializationError(eu.recred.fidouafsvc.dao.StorageDaoTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.Exception: No runnable methods
+
+Running eu.recred.fidouafsvc.dao.TrustedFacetDaoTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0 sec <<< FAILURE! - in eu.recred.fidouafsvc.dao.TrustedFacetDaoTest
+initializationError(eu.recred.fidouafsvc.dao.TrustedFacetDaoTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.Exception: No runnable methods
+
+Running eu.recred.fidouafsvc.service.impl.DeregRequestProcessorServiceTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0 sec <<< FAILURE! - in eu.recred.fidouafsvc.service.impl.DeregRequestProcessorServiceTest
+initializationError(eu.recred.fidouafsvc.service.impl.DeregRequestProcessorServiceTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.Exception: No runnable methods
+
+Running eu.recred.fidouafsvc.service.impl.ProcessAuxRequestServiceTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0 sec <<< FAILURE! - in eu.recred.fidouafsvc.service.impl.ProcessAuxRequestServiceTest
+initializationError(eu.recred.fidouafsvc.service.impl.ProcessAuxRequestServiceTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.Exception: No runnable methods
+
+
+Results :
+
+Tests in error: 
+  AuthenticationIdTest.initializationError »  No runnable methods
+  RegistrationRecordDaoTest.initializationError »  No runnable methods
+  StorageDaoTest.initializationError »  No runnable methods
+  TrustedFacetDaoTest.initializationError »  No runnable methods
+  DeregRequestProcessorServiceTest.initializationError »  No runnable methods
+  ProcessAuxRequestServiceTest.initializationError »  No runnable methods
+
+Tests run: 6, Failures: 0, Errors: 6, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 4.324 s
+[INFO] Finished at: 2016-09-12T14:25:33+03:00
+[INFO] Final Memory: 24M/190M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.19.1:test (default-test) on project fidouafsvc: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\Projs\Spring\fido-uaf-playground\fidouafsvc\target\surefire-reports for the individual test results.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

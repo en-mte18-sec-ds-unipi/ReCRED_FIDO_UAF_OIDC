@@ -16,6 +16,13 @@
 
 package eu.recred.fidouafsvc.storage;
 
+/*
+ * This class records registered users.
+ * <p>REGreq
+ * <p>REGres
+ * <p>DEREGreq
+ */
+
 public class RegistrationRecord {
 	public AuthenticatorRecord authenticator;
 	public String PublicKey;

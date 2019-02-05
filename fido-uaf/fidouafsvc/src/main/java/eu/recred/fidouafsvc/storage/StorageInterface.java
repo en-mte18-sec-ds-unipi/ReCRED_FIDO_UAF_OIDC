@@ -16,22 +16,40 @@
 
 package eu.recred.fidouafsvc.storage;
 
+import eu.recred.fidouafsvc.model.AuthenticationIdModel;
+import eu.recred.fidouafsvc.model.metadata.MetadataStatement;
+
+import java.util.List;
+
+/*
+ * This class records data.
+ */
+
 public interface StorageInterface {
 
-	public void storeServerDataString(String username, String serverDataString);
+	void storeServerDataString(String username, String serverDataString);
 
-	public String getUsername(String serverDataString);
+	String getUsername(String serverDataString);
 
-	public void store(RegistrationRecord[] records)
-			throws DuplicateKeyException, SystemErrorException;
+	void store(RegistrationRecord[] records) throws DuplicateKeyException, SystemErrorException;
 
-	public RegistrationRecord readRegistrationRecord(String key);
+	RegistrationRecord readRegistrationRecord(String key);
 
-	public void update(RegistrationRecord[] records);
+	List<RegistrationRecord> readRegistrationRecordUsername(String username) throws Exception;
 
-	public void saveAuthenticationId(String id, String username);
-	
-	public String getAuthenticated(String id);
+	void update(RegistrationRecord[] records);
 
-	public void deleteRegistrationRecord(String authenticator);
+	void saveAuthenticationId(String id, String username, String timestamp);
+
+	AuthenticationIdModel getAuthenticated(String id);
+
+	void deleteRegistrationRecord(String authenticator);
+
+	List<MetadataStatement> getMetadataStatements();
+
+	MetadataStatement getMetadataStatement(String aaid);
+
+	void deleteAuthenticationId(String id);
+
+	void deleteAuthenticationIdByUsername(String username);
 }

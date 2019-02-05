@@ -18,6 +18,10 @@ package eu.recred.fido.uaf.tlv;
 
 import org.apache.commons.codec.binary.Base64;
 
+/*
+ * This class contains records of tags.
+ */
+
 public class Tag {
 	public int statusId = 0x00;
 	public int id;

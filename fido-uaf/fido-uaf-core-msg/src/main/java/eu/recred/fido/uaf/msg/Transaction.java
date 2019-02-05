@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Contains the Transaction Content provided by the FIDO Server.
+*/
+
 public class Transaction {
 	public String contentType;
 	public String content;

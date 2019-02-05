@@ -1,298 +1,272 @@
-/*
- * Copyright 2015 eBay Software Foundation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package eu.recred.fidouafsvc.ops;
 
-import org.apache.commons.codec.binary.Base64;
-import org.bouncycastle.asn1.DEROctetString;
-import org.bouncycastle.jce.interfaces.ECPublicKey;
-import eu.recred.fido.uaf.crypto.*;
+import eu.recred.fido.uaf.crypto.Notary;
+import eu.recred.fido.uaf.crypto.SHA;
+import eu.recred.fido.uaf.msg.AuthenticationRequest;
 import eu.recred.fido.uaf.msg.AuthenticationResponse;
 import eu.recred.fido.uaf.msg.AuthenticatorSignAssertion;
 import eu.recred.fido.uaf.msg.FinalChallengeParams;
-import eu.recred.fido.uaf.msg.Version;
+import eu.recred.fido.uaf.tlv.*;
 import eu.recred.fidouafsvc.storage.AuthenticatorRecord;
 import eu.recred.fidouafsvc.storage.RegistrationRecord;
+import eu.recred.fidouafsvc.storage.RequestAccountant;
 import eu.recred.fidouafsvc.storage.StorageInterface;
-import eu.recred.fido.uaf.tlv.*;
+import eu.recred.fidouafsvc.util.ResponseHelper;
+import org.apache.commons.codec.binary.Base64;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.*;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/*
+ * This class generates Authentication Responses.
+ */
+
 public class AuthenticationResponseProcessing {
+
+	private ResponseHelper responseHelper;
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private long serverDataExpiryInMs;
 	private Notary notary;
+	private RequestAccountant accountant = RequestAccountant.getInstance();
 
+	// Empty Constractor
 	public AuthenticationResponseProcessing() {
 
 	}
 
-	public AuthenticationResponseProcessing(long serverDataExpiryInMs,
-			Notary notary) {
+	// Constractor with 3 parameters
+	public AuthenticationResponseProcessing(long serverDataExpiryInMs, Notary notary, ResponseHelper responseHelper) {
+		this.responseHelper = responseHelper;
 		this.serverDataExpiryInMs = serverDataExpiryInMs;
 		this.notary = notary;
-
 	}
 
-	public AuthenticatorRecord[] verify(AuthenticationResponse response,
-			StorageInterface serverData) throws Exception {
-		AuthenticatorRecord[] result = new AuthenticatorRecord[response.assertions.length];
+	// Check if response is not empty
+	/**
+	 * verify
+	 * <p>%%% BEGIN SOURCE CODE %%%
+     * {@codesnippet AuthenticationResponseProcessing-verify}
+     * %%% END SOURCE CODE %%%
+	 * <p>This function checks if response is not empty
+	 * 
+	 * <p>AUTHres 2.2.1.1
+	 * @see AuthenticatorRecord
+	 * @see FinalChallengeParams
+	 * {@link eu.recred.fidouafsvc.util.ResponseHelper#checkAssertions(AuthenticationResponse)}
+	 * {@link eu.recred.fidouafsvc.util.ResponseHelper#checkVersion(eu.recred.fido.uaf.msg.Version, AuthenticatorRecord[])}
+	 * {@link eu.recred.fidouafsvc.util.ResponseHelper#checkServerData(String, AuthenticatorRecord[], Notary, long)}
+	 * {@link eu.recred.fidouafsvc.util.ResponseHelper#getFcp(AuthenticationResponse)}
+	 * {@link eu.recred.fidouafsvc.ops.AuthenticationResponseProcessing#processAssertions(AuthenticatorSignAssertion, StorageInterface, byte[], AuthenticationResponse)}
+	 * 
+	 * @param response
+	 * @param serverData
+	 * @return
+	 * @throws Exception
+	 */
+	public AuthenticatorRecord[] verify(AuthenticationResponse response, StorageInterface serverData) throws Exception {
+		// BEGIN: AuthenticationResponseProcessing-verify
+		// AuthenticatorRecord[] result = new
+		// AuthenticatorRecord[response.assertions.length];
+		AuthenticatorRecord[] temp = responseHelper.checkAssertions(response);
+		if (temp != null)
+			return temp;
 
-		checkVersion(response.header.upv);
-		checkServerData(response.header.serverData, result);
-		FinalChallengeParams fcp = getFcp(response);
-		checkFcp(fcp);
-		for (int i = 0; i < result.length; i++) {
-			result[i] = processAssertions(response.assertions[i], serverData);
+		AuthenticatorRecord[] records = new AuthenticatorRecord[response.assertions.length];
+		for (int i = 0; i < records.length; i++) {
+			records[i] = new AuthenticatorRecord();
 		}
-		return result;
+
+		responseHelper.checkVersion(response.header.upv, records);
+		responseHelper.checkServerData(response.header.serverData, records, notary, serverDataExpiryInMs);
+		FinalChallengeParams fcp = responseHelper.getFcp(response);
+		// responseHelper.checkFcp(fcp);
+
+		byte[] FCHash = responseHelper.sha256(response.fcParams);
+
+		for (int i = 0; i < records.length; i++) {
+			records[i] = processAssertions(response.assertions[i], serverData, FCHash, response);
+		}
+		return records;
+		// END: AuthenticationResponseProcessing-verify
 	}
 
-	private AuthenticatorRecord processAssertions(
-			AuthenticatorSignAssertion authenticatorSignAssertion,
-			StorageInterface storage) {
+	// Verify response that is going to send
+	/**
+	 * processAssertions
+	 * <p>%%% BEGIN SOURCE CODE %%%
+     * {@codesnippet AuthenticationResponseProcessing-processAssertions}
+     * %%% END SOURCE CODE %%%
+	 * <p>This function processes the assertions of the registration response record
+	 * 
+	 * <p>AUTHres 2.2.1.1.5
+	 * @see TlvAssertionParser
+	 * @see AuthenticatorRecord
+	 * @see RegistrationRecord
+	 * @see Tags
+	 * @see Tag
+	 * @see AlgAndEncodingEnum
+	 * {@link eu.recred.fidouafsvc.ops.AuthenticationResponseProcessing#getRegistration(AuthenticatorRecord, StorageInterface)}
+	 * 
+	 * @param authenticatorSignAssertion
+	 * @param storage
+	 * @param FCHash
+	 * @param response
+	 * @return
+	 */
+	private AuthenticatorRecord processAssertions(AuthenticatorSignAssertion authenticatorSignAssertion,
+			StorageInterface storage, byte[] FCHash, AuthenticationResponse response) {
+		// BEGIN: AuthenticationResponseProcessing-processAssertions
 		TlvAssertionParser parser = new TlvAssertionParser();
 		AuthenticatorRecord authRecord = new AuthenticatorRecord();
 		RegistrationRecord registrationRecord = null;
 
 		try {
-			authRecord.timestamp = new Date();
+			authRecord.timestamp = "" + new Date().getTime();
 			Tags tags = parser.parse(authenticatorSignAssertion.assertion);
-			authRecord.AAID = new String(tags.getTags().get(
-					TagsEnum.TAG_AAID.id).value);
-			authRecord.KeyID = Base64.encodeBase64URLSafeString(tags.getTags()
-					.get(TagsEnum.TAG_KEYID.id).value);
+			authRecord.AAID = new String(tags.getTags().get(TagsEnum.TAG_AAID.id).value);
+
+			byte[] finalChallenge = tags.getTags().get(TagsEnum.TAG_FINAL_CHALLENGE.id).value;
+			if (!responseHelper.compareByteArr(finalChallenge, FCHash)) {
+				logger.log(Level.INFO, "Final challenge verification failed");
+				authRecord.status = "1498";
+				return authRecord;
+			}
+
+			if (!checkTransactionHash(tags, response)) {
+				logger.log(Level.INFO, "Transcation verification failed!");
+				authRecord.status = "1498";
+				return authRecord;
+			}
+
+			byte[] keyid = tags.getTags().get(TagsEnum.TAG_KEYID.id).value;
+			System.out.println("KeyID bytes: " + keyid);
+			authRecord.KeyID = Base64.encodeBase64URLSafeString(tags.getTags().get(TagsEnum.TAG_KEYID.id).value);
 			// authRecord.KeyID = new String(
 			// tags.getTags().get(TagsEnum.TAG_KEYID.id).value);
 			registrationRecord = getRegistration(authRecord, storage);
-			Tag signnedData = tags.getTags().get(
-					TagsEnum.TAG_UAFV1_SIGNED_DATA.id);
+			int receivedCounter = Integer
+					.reverseBytes(ByteBuffer.wrap(tags.getTags().get(TagsEnum.TAG_COUNTERS.id).value).getInt());
+			int storedCounter = Integer.reverseBytes(Integer.parseInt(registrationRecord.SignCounter));
+			// log the values;
+			logger.log(Level.INFO, "[!!!COUNTERS!!!]received counter: " + receivedCounter);
+			logger.log(Level.INFO, "[!!!COUNTERS!!!]stored counter: " + storedCounter);
+			if (storedCounter != 0 && receivedCounter != 0) {
+				if (storedCounter == 268435456 && receivedCounter == 268435456) {
+					// TODO: Server-Auth-Resp-9-P-1 keeps sending the same counter value and fails.
+				} else if (storedCounter >= receivedCounter) {
+					logger.log(Level.INFO, "Counter verification failed!");
+					authRecord.status = "1498";
+					return authRecord;
+				}
+			}
+			registrationRecord.SignCounter = "" + Integer.reverseBytes(receivedCounter);
+			try {
+				updateRecord(registrationRecord, storage);
+			} catch (Exception e) {
+				logger.log(Level.INFO, "Update sign counter db exception");
+				authRecord.status = "1500";
+				return authRecord;
+			}
+
+			Tag signnedData = tags.getTags().get(TagsEnum.TAG_UAFV1_SIGNED_DATA.id);
 			Tag signature = tags.getTags().get(TagsEnum.TAG_SIGNATURE.id);
 			Tag info = tags.getTags().get(TagsEnum.TAG_ASSERTION_INFO.id);
-			AlgAndEncodingEnum algAndEncoding = getAlgAndEncoding(info);
+			AlgAndEncodingEnum algAndEncoding = responseHelper.getAlgAndEncoding(info);
 			String pubKey = registrationRecord.PublicKey;
 			try {
-				if (!verifySignature(signnedData, signature, pubKey,
-						algAndEncoding)) {
-					logger.log(Level.INFO,
-							"Signature verification failed for authenticator: "
-									+ authRecord.toString());
-					authRecord.status = "FAILED_SIGNATURE_NOT_VALID";
+				if (!responseHelper.verifySignature(signnedData, signature, pubKey, algAndEncoding)) {
+					logger.log(Level.INFO, "Signature verification failed for authenticator: " + authRecord.toString());
+					authRecord.status = "1498";
 					return authRecord;
 				}
 			} catch (Exception e) {
-				logger.log(Level.INFO,
-						"Signature verification failed for authenticator: "
-								+ authRecord.toString(), e);
-				authRecord.status = "FAILED_SIGNATURE_VERIFICATION";
+				logger.log(Level.INFO, "Signature verification failed for authenticator: " + authRecord.toString(), e);
+				authRecord.status = "1498";
 				return authRecord;
 			}
 			authRecord.username = registrationRecord.username;
 			authRecord.deviceId = registrationRecord.deviceId;
-			authRecord.status = "SUCCESS";
+			authRecord.status = "1200";
 			return authRecord;
 		} catch (IOException e) {
-			logger.log(Level.INFO, "Fail to parse assertion: "
-					+ authenticatorSignAssertion.assertion, e);
-			authRecord.status = "FAILED_ASSERTION_VERIFICATION";
+			logger.log(Level.INFO, "Fail to parse assertion: " + authenticatorSignAssertion.assertion, e);
+			authRecord.status = "1498";
 			return authRecord;
 		}
+		// END: AuthenticationResponseProcessing-processAssertions
 	}
 
-	private AlgAndEncodingEnum getAlgAndEncoding(Tag info) {
-		int id = (int) info.value[3] + (int) info.value[4] * 256;
-		AlgAndEncodingEnum ret = null;
-		AlgAndEncodingEnum[] values = AlgAndEncodingEnum.values();
-		for (AlgAndEncodingEnum algAndEncodingEnum : values) {
-			if (algAndEncodingEnum.id == id) {
-				ret = algAndEncodingEnum;
-				break;
-			}
-		}
-		logger.info(" : SignatureAlgAndEncoding : " + ret);
-		return ret;
-	}
-
-	private boolean verifySignature(Tag signedData, Tag signature,
-			String pubKey, AlgAndEncodingEnum algAndEncoding)
-			throws InvalidKeyException, NoSuchAlgorithmException,
-			NoSuchProviderException, SignatureException,
-			UnsupportedEncodingException, Exception {
-
-		byte[] dataForSigning = getDataForSigning(signedData);
-
-		logger.info(" : pub 		   : " + pubKey);
-		logger.info(" : dataForSigning : "
-				+ Base64.encodeBase64URLSafeString(dataForSigning));
-		logger.info(" : signature 	   : "
-				+ Base64.encodeBase64URLSafeString(signature.value));
-
-		// This works
-		// return NamedCurve.verify(KeyCodec.getKeyAsRawBytes(pubKey),
-		// dataForSigning, Asn1.decodeToBigIntegerArray(signature.value));
-
-		byte[] decodeBase64 = Base64.decodeBase64(pubKey);
-		if(algAndEncoding == AlgAndEncodingEnum.UAF_ALG_SIGN_RSASSA_PSS_SHA256_RAW) {
-			PublicKey publicKey = KeyCodec.getRSAPublicKey(decodeBase64);
-			return RSA.verifyPSS(publicKey, 
-					SHA.sha(dataForSigning, "SHA-256"), 
-					signature.value);
-		} else if(algAndEncoding == AlgAndEncodingEnum.UAF_ALG_SIGN_RSASSA_PSS_SHA256_DER) {
-			PublicKey publicKey = KeyCodec.getRSAPublicKey(new DEROctetString(decodeBase64).getOctets());
-			return RSA.verifyPSS(publicKey, 
-					SHA.sha(dataForSigning, "SHA-256"), 
-					new DEROctetString(signature.value).getOctets());
-		} else {
-			if (algAndEncoding == AlgAndEncodingEnum.UAF_ALG_SIGN_SECP256K1_ECDSA_SHA256_DER) {
-				ECPublicKey decodedPub = (ECPublicKey) KeyCodec.getPubKeyFromCurve(
-						decodeBase64, "secp256k1");
-				return NamedCurve.verifyUsingSecp256k1(
-						KeyCodec.getKeyAsRawBytes(decodedPub),
-						SHA.sha(dataForSigning, "SHA-256"),
-						Asn1.decodeToBigIntegerArray(signature.value));
-			}
-			if (algAndEncoding == AlgAndEncodingEnum.UAF_ALG_SIGN_SECP256R1_ECDSA_SHA256_DER) {
-				if (decodeBase64.length>65){
-					return NamedCurve.verify(KeyCodec.getKeyAsRawBytes(pubKey),
-							SHA.sha(dataForSigning, "SHA-256"),
-							Asn1.decodeToBigIntegerArray(signature.value));
-				} else {
-					ECPublicKey decodedPub = (ECPublicKey) KeyCodec.getPubKeyFromCurve(
-							decodeBase64, "secp256r1");
-					return NamedCurve.verify(KeyCodec.getKeyAsRawBytes(decodedPub),
-								SHA.sha(dataForSigning, "SHA-256"),
-								Asn1.decodeToBigIntegerArray(signature.value));
-				}
-			}
-			if (signature.value.length == 64) {
-				ECPublicKey decodedPub = (ECPublicKey) KeyCodec.getPubKeyFromCurve(
-						decodeBase64, "secp256r1");
-				return NamedCurve.verify(KeyCodec.getKeyAsRawBytes(decodedPub),
-						SHA.sha(dataForSigning, "SHA-256"),
-						Asn1.transformRawSignature(signature.value));
-			} else if (65 == decodeBase64.length
-					&& AlgAndEncodingEnum.UAF_ALG_SIGN_SECP256R1_ECDSA_SHA256_DER == algAndEncoding) {
-				ECPublicKey decodedPub = (ECPublicKey) KeyCodec.getPubKeyFromCurve(
-						decodeBase64, "secp256r1");
-				return NamedCurve.verify(KeyCodec.getKeyAsRawBytes(decodedPub),
-						SHA.sha(dataForSigning, "SHA-256"),
-						Asn1.decodeToBigIntegerArray(signature.value));
-			} else {
-				return NamedCurve.verify(KeyCodec.getKeyAsRawBytes(pubKey),
-						SHA.sha(dataForSigning, "SHA-256"),
-						Asn1.decodeToBigIntegerArray(signature.value));
-			}
-		}
-	}
-
-	private byte[] getDataForSigning(Tag signedData) throws IOException {
-		ByteArrayOutputStream byteout = new ByteArrayOutputStream();
-		byteout.write(encodeInt(signedData.id));
-		byteout.write(encodeInt(signedData.length));
-		byteout.write(signedData.value);
-		return byteout.toByteArray();
-	}
-
-	private byte[] encodeInt(int id) {
-
-		byte[] bytes = new byte[2];
-		bytes[0] = (byte) (id & 0x00ff);
-		bytes[1] = (byte) ((id & 0xff00) >> 8);
-		return bytes;
-	}
-
-	private RegistrationRecord getRegistration(AuthenticatorRecord authRecord,
-			StorageInterface serverData) {
-		System.out.println("AuthenticatorResponseProcessing: getRegistration(" + authRecord.toString() +  ")");
+	private RegistrationRecord getRegistration(AuthenticatorRecord authRecord, StorageInterface serverData) {
+		// System.out.println("AuthenticatorResponseProcessing: getRegistration(" +
+		// authRecord.toString() + ")");
 		return serverData.readRegistrationRecord(authRecord.toString());
 	}
 
-	private FinalChallengeParams getFcp(AuthenticationResponse response) {
-		// TODO Auto-generated method stub
-		return null;
+	private void updateRecord(RegistrationRecord record, StorageInterface storage) throws Exception {
+		RegistrationRecord[] records = new RegistrationRecord[1];
+		records[0] = record;
+		storage.update(records);
 	}
 
-	private void checkServerData(String serverDataB64,
-			AuthenticatorRecord[] records) throws Exception {
-		if (notary == null) {
-			return;
-		}
-		String serverData = new String(Base64.decodeBase64(serverDataB64));
-		String[] tokens = serverData.split("\\.");
-		String signature, timeStamp, challenge, dataToSign;
-		try {
-			signature = tokens[0];
-			timeStamp = tokens[1];
-			challenge = tokens[2];
-			dataToSign = timeStamp + "." + challenge;
-			if (!notary.verify(dataToSign, signature)) {
-				throw new ServerDataSignatureNotMatchException();
+	private boolean checkTransactionHash(Tags tags, AuthenticationResponse response) {
+		Tag assertionInfo = tags.getTags().get(TagsEnum.TAG_ASSERTION_INFO.id);
+		if (assertionInfo.value[2] == 0x02) {
+			logger.log(Level.INFO, "[!!!HASH!!!]Server data: " + response.header.serverData);
+			AuthenticationRequest request = null;
+			request = accountant.getAuthenticationRequest(response.header.serverData);
+			if (request == null) {
+				logger.log(Level.INFO, "[!!!HASH!!!]Didn`t find auth req!");
+				return false;
 			}
-			if (isExpired(timeStamp)) {
-				throw new ServerDataExpiredException();
+			if (request.transaction == null || request.transaction.length == 0) {
+				logger.log(Level.INFO, "[!!!HASH!!!]invalid request transaction structure!");
+
+				return false;
 			}
-		} catch (ServerDataExpiredException e) {
-			setErrorStatus(records, "INVALID_SERVER_DATA_EXPIRED");
-			throw new Exception("Invalid server data - Expired data");
-		} catch (ServerDataSignatureNotMatchException e) {
-			setErrorStatus(records, "INVALID_SERVER_DATA_SIGNATURE_NO_MATCH");
-			throw new Exception("Invalid server data - Signature not match");
-		} catch (Exception e) {
-			setErrorStatus(records, "INVALID_SERVER_DATA_CHECK_FAILED");
-			throw new Exception("Server data check failed");
-		}
-
-	}
-
-	private boolean isExpired(String timeStamp) {
-		return Long.parseLong(new String(Base64.decodeBase64(timeStamp)))
-				+ serverDataExpiryInMs < System.currentTimeMillis();
-	}
-
-	private void setErrorStatus(AuthenticatorRecord[] records, String status) {
-		if (records == null || records.length == 0) {
-			return;
-		}
-		for (AuthenticatorRecord rec : records) {
-			if (rec == null) {
-				rec = new AuthenticatorRecord();
+			List<byte[]> trxList = new ArrayList<>();
+			for (int i = 0; i < request.transaction.length; i++) {
+				if (request.transaction[i].content == null || request.transaction[i].content.isEmpty()) {
+					logger.log(Level.INFO, "[!!!HASH!!!]invalid request transaction structure!2");
+					return false;
+				} else {
+					try {
+						byte[] content = Base64.decodeBase64(request.transaction[i].content);
+						trxList.add(SHA.sha(content, "SHA-256"));
+					} catch (Exception e) {
+						logger.log(Level.INFO, "[!!!HASH!!!]sha exception!");
+						return false;
+					}
+				}
 			}
-			rec.status = status;
-		}
-	}
 
-	private void checkVersion(Version upv) throws Exception {
-		if (upv.major == 1 && upv.minor == 0) {
-			return;
-		} else {
-			throw new Exception("Invalid version: " + upv.major + "."
-					+ upv.minor);
-		}
-	}
+			byte[] hash = tags.getTags().get(TagsEnum.TAG_TRANSACTION_CONTENT_HASH.id).value;
 
-	private void checkFcp(FinalChallengeParams fcp) {
-		// TODO Auto-generated method stub
+			boolean found = false;
+			for (byte[] trxHash : trxList) {
+				if (trxHash.length == hash.length) {
+					if (Arrays.equals(trxHash, hash)) {
+						found = true;
+						break;
+					}
+				} else
+					continue;
+			}
 
+			if (!found)
+				logger.log(Level.INFO, "[!!!HASH!!!]didn`t find hash in cache!");
+			else
+				logger.log(Level.INFO, "[!!!HASH!!!]found hash in cache");
+
+			return found;
+		} else
+			return true;
 	}
 
 }

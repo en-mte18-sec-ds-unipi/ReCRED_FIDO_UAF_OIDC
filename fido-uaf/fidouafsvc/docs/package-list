@@ -1,0 +1,12 @@
+eu.recred.fidouafsvc.configuration
+eu.recred.fidouafsvc.controller
+eu.recred.fidouafsvc.dao
+eu.recred.fidouafsvc.dto
+eu.recred.fidouafsvc.dto.adapter
+eu.recred.fidouafsvc.model
+eu.recred.fidouafsvc.model.metadata
+eu.recred.fidouafsvc.ops
+eu.recred.fidouafsvc.service
+eu.recred.fidouafsvc.service.impl
+eu.recred.fidouafsvc.storage
+eu.recred.fidouafsvc.util

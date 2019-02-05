@@ -20,6 +20,10 @@ import java.io.IOException;
 
 import org.apache.commons.codec.binary.Base64;
 
+/*
+ * This class match the variables with tags.
+ */
+
 public class TlvAssertionParser {
 
 	public Tags parse(String base64OfRegResponse) throws IOException {

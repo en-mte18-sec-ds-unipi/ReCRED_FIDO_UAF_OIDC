@@ -16,6 +16,11 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Contains a specification of accepted authenticators and a specification 
+* of disallowed authenticators.
+*/
+// Protocol addition
 public class Policy {
 	public MatchCriteria[][] accepted;
 	//public MatchCriteria[] disallowed;

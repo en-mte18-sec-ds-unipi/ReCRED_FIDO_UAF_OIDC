@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/*
+* UAF Message Extensions.
+*/
+
 public class Extension {
 	public String id;
 	public String data;

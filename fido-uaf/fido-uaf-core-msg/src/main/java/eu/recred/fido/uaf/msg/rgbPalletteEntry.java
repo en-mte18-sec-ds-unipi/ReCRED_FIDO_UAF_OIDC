@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* The rgbPaletteEntry is an RGB three-sample tuple palette entry.
+*/
+
 public class rgbPalletteEntry {
     public short r;
     public short g;

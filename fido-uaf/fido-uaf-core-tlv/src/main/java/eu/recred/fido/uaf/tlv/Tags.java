@@ -20,6 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/*
+ * This class contains a list of tags.
+ */
+
 public class Tags {
 
 	private Map<Integer, Tag> tags = new HashMap<Integer, Tag>();

@@ -16,6 +16,11 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Represents the response to a challenge, including the set of signed 
+* assertions from registered authenticators.
+*/
+
 public class AuthenticationResponse {
 	public OperationHeader header;
 	public String fcParams;

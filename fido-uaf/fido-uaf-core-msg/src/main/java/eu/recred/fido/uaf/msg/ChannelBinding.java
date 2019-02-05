@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Contains channel binding information.
+*/
+
 public class ChannelBinding {
 	public String serverEndPoint;
 	public String tlsServerCertificate;

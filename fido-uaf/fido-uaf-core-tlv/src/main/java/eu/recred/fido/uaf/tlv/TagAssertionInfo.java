@@ -18,6 +18,10 @@ package eu.recred.fido.uaf.tlv;
 
 import java.io.IOException;
 
+/*
+ * This class gets info from tags.
+ */
+
 public class TagAssertionInfo {
 
 	private Tag t;

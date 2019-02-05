@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Represents a generic version with major and minor fields.
+*/
+
 public class Version {
     public int major;
     public int minor;

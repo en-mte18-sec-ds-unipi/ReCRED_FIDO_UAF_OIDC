@@ -16,8 +16,10 @@
 
 package eu.recred.fidouafsvc.storage;
 
-import java.util.Date;
-
+/*
+ * This class records authenticators.
+ * <p>AUTHres
+ */
 public class AuthenticatorRecord {
 
 	private static final String DLM = "#";
@@ -27,9 +29,11 @@ public class AuthenticatorRecord {
 	public String deviceId;
 	public String username;
 	public String status;
-	public Date timestamp;
+	public String timestamp;
 
 	public String authenticationId;
+
+	public String radiusPassword;
 
 	public String toString() {
 		return AAID + DLM + KeyID;

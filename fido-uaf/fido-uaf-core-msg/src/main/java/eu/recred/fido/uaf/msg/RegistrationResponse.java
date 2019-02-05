@@ -16,8 +16,13 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Contains all fields related to the registration response.
+*/
+
 public class RegistrationResponse {
 	public OperationHeader header;
 	public String fcParams;
 	public AuthenticatorRegistrationAssertion[] assertions;
+	public String otp;
 }

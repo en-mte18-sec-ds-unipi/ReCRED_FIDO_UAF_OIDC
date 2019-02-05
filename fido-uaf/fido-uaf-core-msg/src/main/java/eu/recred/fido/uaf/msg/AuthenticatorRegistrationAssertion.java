@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Contains the authenticator's response to a RegistrationRequest message.
+*/
+
 public class AuthenticatorRegistrationAssertion {
 	public String assertionScheme;
 	public String assertion;

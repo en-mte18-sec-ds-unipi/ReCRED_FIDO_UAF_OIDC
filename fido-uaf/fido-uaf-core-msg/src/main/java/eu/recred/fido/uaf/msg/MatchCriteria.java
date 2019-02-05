@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Represents the matching criteria to be used in the server policy.
+*/
+// Protocol addition
 public class MatchCriteria {
 	public String[] aaid;
 	//public String[] vendorID;

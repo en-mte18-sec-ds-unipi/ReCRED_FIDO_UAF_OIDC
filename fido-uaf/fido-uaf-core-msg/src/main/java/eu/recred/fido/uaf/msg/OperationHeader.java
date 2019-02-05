@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Represents a UAF message Request and Response header.
+*/
+// Protocol addition
 public class OperationHeader {
 	public Version upv;
 	public Operation op;

@@ -13,27 +13,26 @@ import java.security.MessageDigest;
 @Service
 public class NotaryServiceDummyImpl implements Notary {
 
-    private String hmacSecret = "HMAC-is-just-one-way";
+	private String hmacSecret = "HMAC-is-just-one-way";
 
-    public NotaryServiceDummyImpl() {}
+	public NotaryServiceDummyImpl() {
+	}
 
-    public String   sign(String signData) {
-        try {
-            return Base64.encodeBase64URLSafeString(HMAC.sign(signData, hmacSecret));
-        }
-        catch (Exception ex) {
-            System.out.println(ex);
-        }
-        return null;
-    }
+	public String sign(String signData) {
+		try {
+			return Base64.encodeBase64URLSafeString(HMAC.sign(signData, hmacSecret));
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+		return null;
+	}
 
-    public boolean  verify(String signData, String signature) {
-        try {
-            return MessageDigest.isEqual(Base64.decodeBase64(signature), HMAC.sign(signData, hmacSecret));
-        }
-        catch (Exception ex) {
-            System.out.println(ex);
-        }
-        return false;
-    }
+	public boolean verify(String signData, String signature) {
+		try {
+			return MessageDigest.isEqual(Base64.decodeBase64(signature), HMAC.sign(signData, hmacSecret));
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+		return false;
+	}
 }

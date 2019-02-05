@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Contains the UAF Authentication Request Message.
+*/
+
 public class AuthenticationRequest {
 	public OperationHeader header;
 	public String challenge;

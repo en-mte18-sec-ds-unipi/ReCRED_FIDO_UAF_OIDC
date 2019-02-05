@@ -16,6 +16,12 @@
 
 package eu.recred.fido.uaf.msg;
 
+import java.util.*;
+
+/**
+* Describes the operation type of a UAF message or request for a message.
+*/
+
 public enum Operation {
     Reg,
     Auth,

@@ -16,55 +16,55 @@ import java.util.List;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-//@Ignore
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/fidouafsvc-servlet.xml"})
+@ContextConfiguration(locations = { "/fidouafsvc-servlet.xml" })
 public class RegistrationRecordDaoTest {
 
-    @Autowired
-    RegistrationRecordDao registrationRecordDao;
+	@Autowired
+	RegistrationRecordDao registrationRecordDao;
 
-    RegistrationRecord[] records = null;
+	RegistrationRecord[] records = null;
 
-    @Before
-    public void setUp() {
-        records = createRecords();
-        registrationRecordDao.addRegistrationRecords(records);
-    }
+	@Before
+	public void setUp() {
+		records = createRecords();
+		registrationRecordDao.addRegistrationRecords(records);
+	}
 
-    @Test
-    public void basic() {
-        // Check to see if the records were inserted.
-        for (RegistrationRecord record : records)
-            assertNotNull(registrationRecordDao.getByAuthenticator(record.authenticator.toString()));
+	@Test
+	public void basic() {
+		// Check to see if the records were inserted.
+		for (RegistrationRecord record : records)
+			assertNotNull(registrationRecordDao.getByAuthenticator(record.authenticator.toString()));
 
-        // Remove then check.
-        for (RegistrationRecord record : records) {
-            try {
-                registrationRecordDao.deleteRecord(record.authenticator.toString());
-                assertNull(registrationRecordDao.getByAuthenticator(record.authenticator.toString()));
-            } catch (IndexOutOfBoundsException e) {
-                assertNotNull(e);
-            }
-        }
-    }
+		// Remove then check.
+		for (RegistrationRecord record : records) {
+			try {
+				registrationRecordDao.deleteRecord(record.authenticator.toString());
+				assertNull(registrationRecordDao.getByAuthenticator(record.authenticator.toString()));
+			} catch (IndexOutOfBoundsException e) {
+				assertNotNull(e);
+			}
+		}
+	}
 
-    private RegistrationRecord[] createRecords() {
-        List<RegistrationRecord> registrationRecords = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            RegistrationRecord record = new RegistrationRecord();
-            record.username = "user" + i;
-            AuthenticatorRecord authenticator = new AuthenticatorRecord();
-            authenticator.AAID = "aaid" + i;
-            authenticator.KeyID = "keyid" + i;
-            authenticator.username = "user" + i;
-            record.authenticator = authenticator;
+	private RegistrationRecord[] createRecords() {
+		List<RegistrationRecord> registrationRecords = new ArrayList<>();
+		for (int i = 0; i < 6; i++) {
+			RegistrationRecord record = new RegistrationRecord();
+			record.username = "user" + i;
+			AuthenticatorRecord authenticator = new AuthenticatorRecord();
+			authenticator.AAID = "aaid" + i;
+			authenticator.KeyID = "keyid" + i;
+			authenticator.username = "user" + i;
+			record.authenticator = authenticator;
 
-            registrationRecords.add(record);
-        }
-        RegistrationRecord[] recordsArr = registrationRecords.
-            toArray(new RegistrationRecord[registrationRecords.size()]);
+			registrationRecords.add(record);
+		}
+		RegistrationRecord[] recordsArr = registrationRecords
+				.toArray(new RegistrationRecord[registrationRecords.size()]);
 
-        return recordsArr;
-    }
+		return recordsArr;
+	}
 }

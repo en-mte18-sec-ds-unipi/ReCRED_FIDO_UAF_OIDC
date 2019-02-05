@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* Represents a JSON Web Key encoding of an elliptic curve public key.
+*/
+
 public class JwkKey {
     public String kty = "EC";
     public String crv = "P-256";

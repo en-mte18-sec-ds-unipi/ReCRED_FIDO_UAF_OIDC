@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* The DisplayPNGCharacteristicsDescriptor describes a PNG image characteristics.
+*/
+
 public class DisplayPNGCharacteristicsDescriptor {
 	public long width;
 	public long height;

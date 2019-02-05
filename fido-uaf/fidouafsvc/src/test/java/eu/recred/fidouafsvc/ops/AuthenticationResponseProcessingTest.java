@@ -1,76 +1,110 @@
 package eu.recred.fidouafsvc.ops;
 
 import com.google.gson.Gson;
+import eu.recred.fido.uaf.msg.AuthenticationResponse;
+import eu.recred.fidouafsvc.model.AuthenticationIdModel;
+import eu.recred.fidouafsvc.model.metadata.MetadataStatement;
 import eu.recred.fidouafsvc.storage.AuthenticatorRecord;
 import eu.recred.fidouafsvc.storage.RegistrationRecord;
 import eu.recred.fidouafsvc.storage.StorageInterface;
-import eu.recred.fido.uaf.msg.AuthenticationResponse;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-//@Ignore
+@Ignore
 public class AuthenticationResponseProcessingTest {
-    Gson gson = new Gson();
-    private static final String TEST_USERNAME = "testUsername";
+	Gson gson = new Gson();
+	private static final String TEST_USERNAME = "testUsername";
 
-    @Test
-    public void basic() throws Exception {
-        AuthenticationResponseProcessing p = new AuthenticationResponseProcessing();
-        AuthenticationResponse response = getTestResponse();
-        StorageInterface serverData = new ServerDataImpl();
-        AuthenticatorRecord[] authenticatorRecords = p.verify(response, serverData);
-        assertTrue(authenticatorRecords.length == 1);
-        assertEquals(authenticatorRecords[0].username, TEST_USERNAME);
-        assertEquals(authenticatorRecords[0].status, "SUCCESS");
-    }
+	@Test
+	public void basic() throws Exception {
+		AuthenticationResponseProcessing p = new AuthenticationResponseProcessing();
+		AuthenticationResponse response = getTestResponse();
+		StorageInterface serverData = new ServerDataImpl();
+		AuthenticatorRecord[] authenticatorRecords = p.verify(response, serverData);
+		assertTrue(authenticatorRecords.length == 1);
+		assertEquals(authenticatorRecords[0].username, TEST_USERNAME);
+		assertEquals(authenticatorRecords[0].status, "SUCCESS");
+	}
 
-    private AuthenticationResponse getTestResponse() {
-        return gson.fromJson(getTestResponseAsJsonString(), AuthenticationResponse.class);
-    }
+	private AuthenticationResponse getTestResponse() {
+		return gson.fromJson(getTestResponseAsJsonString(), AuthenticationResponse.class);
+	}
 
-    private String getTestResponseAsJsonString() {
-        return "{\"header\":{\"upv\":{\"major\":1,\"minor\":0},\"op\":\"Auth\",\"appID\":\"android:apk-key-hash:bE0f1WtRJrZv/C0y9CM73bAUqiI\",\"serverData\":\"MjBlNDkxM2ZkODg4YTcwYzEwYWRhMDAxZjNkYzA5MTgyNDg2NDE1MzgxMjljOGVhOTAwYThhMDhiYTMxMTU5OC5NVFEwTWpnNU1qRXhNalkyTVEuU2tSS2FFcEVSWGRLUlRRMVZHMWFZVnA2YkVaWlZtaDNZMGh3U0dKWFRuRmxhMDUzV1ZkVg\"},\"fcParams\":\"eyJhcHBJRCI6ICJhbmRyb2lkOmFway1rZXktaGFzaDpiRTBmMVd0UkpyWnYvQzB5OUNNNzNiQVVxaUkiLCAiY2hhbGxlbmdlIjogIkpESmhKREV3SkU0NVRtWmFaemxGWVZod2NIcEhiV05xZWtOd1lXVSIsICJmYWNldElEIjogImFuZHJvaWQ6YXBrLWtleS1oYXNoOmJFMGYxV3RSSnJadi9DMHk5Q003M2JBVXFpSSIsICJjaGFubmVsQmluZGluZyI6IHt9fQ==\",\"assertions\":[{\"assertionScheme\":\"UAFV1TLV\",\"assertion\":\"Aj7cAAQ-jgALLgkAREFCOCM4MDExDi4FAAEAAQIADy4gADTtvD7YbR3StOT1LwT04sb-V6EopmakXBK-3P4W1YbbCi4gACsUQcxM9uGW-4U0lg4Ph5O42KrWQXuMmXKRzLNrhWimEC4AAAkuIAAoS_GsukwMqV51f_fM3kvsUA8TE9gPQ3M7n1KQUauSFA0uBAAAAAAABi5GADBEAiBZURmUIIuqa4WKs9p0od-Yd_MMyl-7QiKHs8--9ovFUQIgdGgfTKKBS92JYhPLW7j6NyIug3igBTO9z0A3EovJvpk\"}]}";
-    }
+	private String getTestResponseAsJsonString() {
+		return "{\"header\":{\"upv\":{\"major\":1,\"minor\":0},\"op\":\"Auth\",\"appID\":\"android:apk-key-hash:bE0f1WtRJrZv/C0y9CM73bAUqiI\",\"serverData\":\"MjBlNDkxM2ZkODg4YTcwYzEwYWRhMDAxZjNkYzA5MTgyNDg2NDE1MzgxMjljOGVhOTAwYThhMDhiYTMxMTU5OC5NVFEwTWpnNU1qRXhNalkyTVEuU2tSS2FFcEVSWGRLUlRRMVZHMWFZVnA2YkVaWlZtaDNZMGh3U0dKWFRuRmxhMDUzV1ZkVg\"},\"fcParams\":\"eyJhcHBJRCI6ICJhbmRyb2lkOmFway1rZXktaGFzaDpiRTBmMVd0UkpyWnYvQzB5OUNNNzNiQVVxaUkiLCAiY2hhbGxlbmdlIjogIkpESmhKREV3SkU0NVRtWmFaemxGWVZod2NIcEhiV05xZWtOd1lXVSIsICJmYWNldElEIjogImFuZHJvaWQ6YXBrLWtleS1oYXNoOmJFMGYxV3RSSnJadi9DMHk5Q003M2JBVXFpSSIsICJjaGFubmVsQmluZGluZyI6IHt9fQ==\",\"assertions\":[{\"assertionScheme\":\"UAFV1TLV\",\"assertion\":\"Aj7cAAQ-jgALLgkAREFCOCM4MDExDi4FAAEAAQIADy4gADTtvD7YbR3StOT1LwT04sb-V6EopmakXBK-3P4W1YbbCi4gACsUQcxM9uGW-4U0lg4Ph5O42KrWQXuMmXKRzLNrhWimEC4AAAkuIAAoS_GsukwMqV51f_fM3kvsUA8TE9gPQ3M7n1KQUauSFA0uBAAAAAAABi5GADBEAiBZURmUIIuqa4WKs9p0od-Yd_MMyl-7QiKHs8--9ovFUQIgdGgfTKKBS92JYhPLW7j6NyIug3igBTO9z0A3EovJvpk\"}]}";
+	}
 
-    class ServerDataImpl implements StorageInterface {
-        public void storeServerDataString(String username, String serverDataString) {
+	class ServerDataImpl implements StorageInterface {
+		public void storeServerDataString(String username, String serverDataString) {
 
-        }
+		}
 
-        public String getUsername(String serverDataString) {
-            return null;
-        }
+		public String getUsername(String serverDataString) {
+			return null;
+		}
 
-        public void store(RegistrationRecord[] records) {
+		public void store(RegistrationRecord[] records) {
 
-        }
+		}
 
-        public RegistrationRecord readRegistrationRecord(String key) {
-            RegistrationRecord r = new RegistrationRecord();
-            r.username = TEST_USERNAME;
-            r.PublicKey =
-                    "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAN6POEisT65JDZ_oHBXreI59W3BpISIrmYu9MzDD8ec9BCEgEOolypVx291mPg_Hv61AWKjCA6w_DaLCNKKC3g";
-            return r;
-        }
+		public RegistrationRecord readRegistrationRecord(String key) {
+			RegistrationRecord r = new RegistrationRecord();
+			r.username = TEST_USERNAME;
+			r.PublicKey = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAN6POEisT65JDZ_oHBXreI59W3BpISIrmYu9MzDD8ec9BCEgEOolypVx291mPg_Hv61AWKjCA6w_DaLCNKKC3g";
+			return r;
+		}
 
-        public void saveAuthenticationId(String id, String username) {
+		@Override
+		public List<RegistrationRecord> readRegistrationRecordUsername(String username) {
+			return null;
+		}
 
-        }
+		public void saveAuthenticationId(String id, String username) {
 
-        public void update(RegistrationRecord[] records) {
+		}
 
-        }
+		public void update(RegistrationRecord[] records) {
 
-        public String getAuthenticated(String id) {
-            return null;
-        }
+		}
 
+		@Override
+		public void saveAuthenticationId(String id, String username, String timestamp) {
 
-        public void deleteRegistrationRecord(String authenticator) {
+		}
 
-        }
-    }
+		public AuthenticationIdModel getAuthenticated(String id) {
+			return null;
+		}
+
+		public void deleteRegistrationRecord(String authenticator) {
+
+		}
+
+		@Override
+		public List<MetadataStatement> getMetadataStatements() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public MetadataStatement getMetadataStatement(String aaid) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void deleteAuthenticationId(String id) {
+
+		}
+
+		@Override
+		public void deleteAuthenticationIdByUsername(String username) {
+
+		}
+	}
 }

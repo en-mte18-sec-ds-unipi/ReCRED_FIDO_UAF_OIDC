@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/*
+* Contains parameters for finalChallenge.
+*/
+
 public class FinalChallengeParams {
 	public String appID;
 	public String challenge;

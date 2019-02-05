@@ -1,11 +1,15 @@
 package eu.recred.fidouafsvc.service;
 
-
 /**
  * Created by georgeg on 04/07/16.
  */
-public interface NotaryService {
-    public String sign(String dataToSign);
-    public boolean verify(String dataToSign, String signature);
-}
 
+/*
+ * This class notarize the data.
+ */
+
+public interface NotaryService {
+	String sign(String dataToSign);
+
+	boolean verify(String dataToSign, String signature);
+}

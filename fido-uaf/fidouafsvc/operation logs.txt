@@ -1,0 +1,120 @@
+28-May-2018 17:33:31.814 INFO [http-nio-8080-exec-7] eu.recred.fidouafsvc.controller.FidoUafRegistrationController.getRequestByUsername ***-----BEGIN REG REQUEST-----***
+28-May-2018 17:33:31.820 INFO [http-nio-8080-exec-7] eu.recred.fidouafsvc.controller.FidoUafRegistrationController.getRequestByUsername APPID: https://recred-dev.certsign.ro:8443/fido_fo/v1/trustedfacets
+28-May-2018 17:33:31.820 INFO [http-nio-8080-exec-7] eu.recred.fidouafsvc.controller.FidoUafRegistrationController.getRequestByUsername USERNAME: lights
+28-May-2018 17:33:31.822 INFO [http-nio-8080-exec-7] eu.recred.fidouafsvc.controller.FidoUafRegistrationController.getRequestByUsername REQUEST: [{"header":{"upv":{"major":1,"minor":0},"op":"Reg","appID":"https://192.168.1.27:9443/fido/v1/trustedfacets","serverData":"Qk5JNXZ4Q0RnRmN2cEo5Vk04bmJxOHF5MjY4N0pYaDNsRDJnTTFCUmo1ay5NVFV5TnpVeU9EZ3hNVGd5TUEuYkdsbmFIUnouU2tSS2FFcEVSWGRLUmtKNFlXdHJNRnBZUm5KamEwcDBWMmswZDA1VVduVlJla0l5VFZoVg"},"challenge":"JDJhJDEwJFBxakk0ZXFrckJtWi4wNTZuQzB2MXU","username":"lights","policy":{"accepted":[[{"aaid":["9874#0101"]}],[{"aaid":["9874#0001"]}],[{"aaid":["EBA0#0001"]}],[{"aaid":["0045#0005"]}],[{"aaid":["004A#2200"]}],[{"aaid":["004A#2300"]}],[{"aaid":["0053#0001"]}],[{"aaid":["0053#0002"]}],[{"aaid":["001D#0002"]}],[{"aaid":["0047#0002"]}]]}}]
+28-May-2018 17:33:31.822 INFO [http-nio-8080-exec-7] eu.recred.fidouafsvc.controller.FidoUafRegistrationController.getRequestByUsername ***-----END REG REQUEST-----***
+Hibernate: 
+    select
+        this_.id as id1_4_0_,
+        this_.DESCRIPTION as DESCRIPT2_4_0_,
+        this_.NAME as NAME3_4_0_ 
+    from
+        TRUSTEDFACET this_
+28-May-2018 17:33:35.128 INFO [http-nio-8080-exec-9] eu.recred.fidouafsvc.controller.FidoUafRegistrationController.getResponse ***-----BEGIN REG RESPONSE-----***
+28-May-2018 17:33:35.130 INFO [http-nio-8080-exec-9] eu.recred.fidouafsvc.controller.FidoUafRegistrationController.getResponse APPID: https://recred-dev.certsign.ro:8443/fido_fo/v1/trustedfacets
+28-May-2018 17:33:35.130 INFO [http-nio-8080-exec-9] eu.recred.fidouafsvc.controller.FidoUafRegistrationController.getResponse PAYLOAD: [{"assertions":[{"assertion":"AT5AAwM-6wALLgkARUJBMCMwMDAxDi4HAAAAAQIAAQEKLiAA-7SmV0DmXJPwEVBDMhkr7WCkiBkF\n4mPs0NoBKgnHpFAJLiwAXzhPT0tZakR5ZWRFa2lVRjBtczNrSjRGbU9Bd0JUNTJiamt3bUE0c0o3\nRT0NLggAAAAAAAAAAAAMLlsAMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEofNbVuzW2OSURNhQ\nBz7-KbZq_2Hno79Lx8AEwlKMWVRz6U5gs5cXIJVLztUuClqUyYxQLw0evDsRYQmUAIbS6_w_EAAx\nMTQxOTNhNThjZGE2NTM4Bz5NAgYuSAAwRgIhALy3YalYdY1bQPBicwrmQqrFTanyCwxE1uDySDfE\nlyGOAiEA_NOw6rmAriTO0DehBgLh36wvc7rd4l4rPLEO4P_n9KgFLv0BMIIB-TCCAZ-gAwIBAgIE\nVTFM0zAJBgcqhkjOPQQBMIGEMQswCQYDVQQGEwJVUzELMAkGA1UECAwCQ0ExETAPBgNVBAcMCFNh\nbiBKb3NlMRMwEQYDVQQKDAplQmF5LCBJbmMuMQwwCgYDVQQLDANUTlMxEjAQBgNVBAMMCWVCYXks\nIEluYzEeMBwGCSqGSIb3DQEJARYPbnBlc2ljQGViYXkuY29tMB4XDTE1MDQxNzE4MTEzMVoXDTE1\nMDQyNzE4MTEzMVowgYQxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTERMA8GA1UEBwwIU2FuIEpv\nc2UxEzARBgNVBAoMCmVCYXksIEluYy4xDDAKBgNVBAsMA1ROUzESMBAGA1UEAwwJZUJheSwgSW5j\nMR4wHAYJKoZIhvcNAQkBFg9ucGVzaWNAZWJheS5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNC\nAAQ8hw5lHTUXvZ3SzY9argbOOBD2pn5zAM4mbShwQyCL5bRskTL3HVPWPQxqYVM-3pJtJILYqOWs\nIMd5Rb_h8D-EMAkGByqGSM49BAEDSQAwRgIhAIpkop_L3fOtm79Q2lKrKxea-KcvA1g6qkzaj42V\nD2hgAiEArtPpTEADIWz2yrl5XGfJVcfcFmvpMAuMKvuE1J73jp4\u003d\n","assertionScheme":"UAFV1TLV"}],"fcParams":"eyJhcHBJRCI6Imh0dHBzOi8vMTkyLjE2OC4xLjI3Ojk0NDMvZmlkby92MS90cnVzdGVkZmFjZXRz\nIiwiY2hhbGxlbmdlIjoiSkRKaEpERXdKRkJ4YWtrMFpYRnJja0p0V2k0d05UWnVRekIyTVhVIiwi\nY2hhbm5lbEJpbmRpbmciOnt9LCJmYWNldElEIjoiYW5kcm9pZDphcGsta2V5LWhhc2g6V2dud2RL\nRmZPcUg0TUFxRWgzM0s2RF83SlJ0QnBxNWc0Y2hrRHZ3Ymd6VVx1MDAzZCJ9\n","header":{"appID":"https://192.168.1.27:9443/fido/v1/trustedfacets","op":"Reg","serverData":"Qk5JNXZ4Q0RnRmN2cEo5Vk04bmJxOHF5MjY4N0pYaDNsRDJnTTFCUmo1ay5NVFV5TnpVeU9EZ3hNVGd5TUEuYkdsbmFIUnouU2tSS2FFcEVSWGRLUmtKNFlXdHJNRnBZUm5KamEwcDBWMmswZDA1VVduVlJla0l5VFZoVg","upv":{"major":1,"minor":0}}}]
+Looking for record with username: lights
+Hibernate: 
+    select
+        registrati0_.id as id1_3_,
+        registrati0_.authenticator as authenti2_3_,
+        registrati0_.record as record3_3_,
+        registrati0_.timestamp as timestam4_3_ 
+    from
+        REGISTRATIONRECORD registrati0_
+nothing found!
+28-May-2018 17:33:35.268 INFO [http-nio-8080-exec-9] eu.recred.fidouafsvc.util.ResponseHelper.validate  : Attestation Cert :   [0]         Version: 3
+         SerialNumber: 1429294291
+             IssuerDN: C=US,ST=CA,L=San Jose,O=eBay\, Inc.,OU=TNS,CN=eBay\, Inc,E=npesic@ebay.com
+           Start Date: Fri Apr 17 18:11:31 UTC 2015
+           Final Date: Mon Apr 27 18:11:31 UTC 2015
+            SubjectDN: C=US,ST=CA,L=San Jose,O=eBay\, Inc.,OU=TNS,CN=eBay\, Inc,E=npesic@ebay.com
+           Public Key: EC Public Key
+            X: 3c870e651d3517bd9dd2cd8f5aae06ce3810f6a67e7300ce266d287043208be5
+            Y: b46c9132f71d53d63d0c6a61533ede926d2482d8a8e5ac20c77945bfe1f03f84
+
+  Signature Algorithm: ECDSA
+            Signature: 30460221008a64a29fcbddf3ad9bbf50da52ab2b
+                       179af8a72f03583aaa4cda8f8d950f6860022100
+                       aed3e94c4003216cf6cab9795c67c955c7dc166b
+                       e9300b8c2afb84d49ef78e9e
+
+28-May-2018 17:33:35.268 INFO [http-nio-8080-exec-9] eu.recred.fidouafsvc.util.ResponseHelper.validate  : Cert Alg : ECDSA
+28-May-2018 17:33:35.270 INFO [http-nio-8080-exec-9] eu.recred.fido.uaf.crypto.KeyCodec.getKeyAsRawBytes Raw key length:65
+28-May-2018 17:33:35.280 INFO [http-nio-8080-exec-9] eu.recred.fidouafsvc.ops.RegistrationResponseProcessing.processAssertions FC: -7SmV0DmXJPwEVBDMhkr7WCkiBkF4mPs0NoBKgnHpFA
+Authenticator AAID: EBA0#0001
+Authenticator KeyID: XzhPT0tZakR5ZWRFa2lVRjBtczNrSjRGbU9Bd0JUNTJiamt3bUE0c0o3RT0
+Hibernate: 
+    insert 
+    into
+        REGISTRATIONRECORD
+        (id, authenticator, record, timestamp) 
+    values
+        (null, ?, ?, ?)
+28-May-2018 17:33:35.370 INFO [http-nio-8080-exec-9] eu.recred.fidouafsvc.controller.FidoUafRegistrationController.getResponse RESPONSE: [{"authenticator":{"AAID":"EBA0#0001","KeyID":"XzhPT0tZakR5ZWRFa2lVRjBtczNrSjRGbU9Bd0JUNTJiamt3bUE0c0o3RT0"},"PublicKey":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEofNbVuzW2OSURNhQBz7-KbZq_2Hno79Lx8AEwlKMWVRz6U5gs5cXIJVLztUuClqUyYxQLw0evDsRYQmUAIbS6w","SignCounter":"0","AuthenticatorVersion":"0.0","username":"lights","deviceId":"114193a58cda6538","timeStamp":"1527528815280","status":"1200","attestCert":"MIIB-TCCAZ-gAwIBAgIEVTFM0zAJBgcqhkjOPQQBMIGEMQswCQYDVQQGEwJVUzELMAkGA1UECAwCQ0ExETAPBgNVBAcMCFNhbiBKb3NlMRMwEQYDVQQKDAplQmF5LCBJbmMuMQwwCgYDVQQLDANUTlMxEjAQBgNVBAMMCWVCYXksIEluYzEeMBwGCSqGSIb3DQEJARYPbnBlc2ljQGViYXkuY29tMB4XDTE1MDQxNzE4MTEzMVoXDTE1MDQyNzE4MTEzMVowgYQxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTERMA8GA1UEBwwIU2FuIEpvc2UxEzARBgNVBAoMCmVCYXksIEluYy4xDDAKBgNVBAsMA1ROUzESMBAGA1UEAwwJZUJheSwgSW5jMR4wHAYJKoZIhvcNAQkBFg9ucGVzaWNAZWJheS5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQ8hw5lHTUXvZ3SzY9argbOOBD2pn5zAM4mbShwQyCL5bRskTL3HVPWPQxqYVM-3pJtJILYqOWsIMd5Rb_h8D-EMAkGByqGSM49BAEDSQAwRgIhAIpkop_L3fOtm79Q2lKrKxea-KcvA1g6qkzaj42VD2hgAiEArtPpTEADIWz2yrl5XGfJVcfcFmvpMAuMKvuE1J73jp4","attestDataToSign":"Az7rAAsuCQBFQkEwIzAwMDEOLgcAAAABAgABAQouIAD7tKZXQOZck_ARUEMyGSvtYKSIGQXiY-zQ2gEqCcekUAkuLABfOE9PS1lqRHllZEVraVVGMG1zM2tKNEZtT0F3QlQ1MmJqa3dtQTRzSjdFPQ0uCAAAAAAAAAAAAAwuWwAwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASh81tW7NbY5JRE2FAHPv4ptmr_Yeejv0vHwATCUoxZVHPpTmCzlxcglUvO1S4KWpTJjFAvDR68OxFhCZQAhtLr_D8QADExNDE5M2E1OGNkYTY1Mzg","attestSignature":"MEYCIQC8t2GpWHWNW0DwYnMK5kKqxU2p8gsMRNbg8kg3xJchjgIhAPzTsOq5gK4kztA3oQYC4d-sL3O63eJeKzyxDuD_5_So","attestVerifiedStatus":"VALID"}]
+28-May-2018 17:33:35.370 INFO [http-nio-8080-exec-9] eu.recred.fidouafsvc.controller.FidoUafRegistrationController.getResponse ***-----END REG RESPONSE-----***
+
+
+
+
+
+28-May-2018 17:34:08.054 INFO [http-nio-8080-exec-3] eu.recred.fidouafsvc.controller.FidoUafAuthenticationController.getRequest ***-----BEGIN AUTH REQUEST-----***
+28-May-2018 17:34:08.057 INFO [http-nio-8080-exec-3] eu.recred.fidouafsvc.controller.FidoUafAuthenticationController.getRequest APPID: https://recred-dev.certsign.ro:8443/fido_fo/v1/trustedfacets
+28-May-2018 17:34:08.057 INFO [http-nio-8080-exec-3] eu.recred.fidouafsvc.controller.FidoUafAuthenticationController.getRequest REQUEST: [{"header":{"upv":{"major":1,"minor":0},"op":"Auth","appID":"https://192.168.1.27:9443/fido/v1/trustedfacets","serverData":"N3U2d1FpbFdwM3VJRm5SQlk3QlpKU0ZhYW5RRzRsNTJOVDNydVpoSkdxYy5NVFV5TnpVeU9EZzBPREExTncuU2tSS2FFcEVSWGRLUjFwTVlrUm9WVlZIZUhaVU0wSkZXVEJqZVUxRVRsbE5Wemt5VDFkVg"},"challenge":"JDJhJDEwJGZLbDhUUGxvT3BEY0cyMDNYMW92OWU","policy":{"accepted":[[{"aaid":["9874#0101"]}],[{"aaid":["9874#0001"]}],[{"aaid":["EBA0#0001"]}],[{"aaid":["0045#0005"]}],[{"aaid":["004A#2200"]}],[{"aaid":["004A#2300"]}],[{"aaid":["0053#0001"]}],[{"aaid":["0053#0002"]}],[{"aaid":["001D#0002"]}],[{"aaid":["0047#0002"]}]]}}]
+28-May-2018 17:34:08.057 INFO [http-nio-8080-exec-3] eu.recred.fidouafsvc.controller.FidoUafAuthenticationController.getRequest ***-----END AUTH REQUEST-----***
+Hibernate: 
+    select
+        this_.id as id1_4_0_,
+        this_.DESCRIPTION as DESCRIPT2_4_0_,
+        this_.NAME as NAME3_4_0_ 
+    from
+        TRUSTEDFACET this_
+28-May-2018 17:34:10.899 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.controller.FidoUafAuthenticationController.getResponse ***-----BEGIN AUTH RESPONSE-----***
+28-May-2018 17:34:10.900 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.controller.FidoUafAuthenticationController.getResponse APPID: https://recred-dev.certsign.ro:8443/fido_fo/v1/trustedfacets
+28-May-2018 17:34:10.900 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.controller.FidoUafAuthenticationController.getResponse PAYLOAD: [{"assertions":[{"assertion":"Aj7QAAQ-ggALLgkARUJBMCMwMDAxDi4FAAAAAQIADy4IANzNVe2s2wMSCi4gAKQy_-Fe59eJhkuR\nb7X28DdBhT-qO3W2zOuz4CsUbYLyEC4AAAkuLABfOE9PS1lqRHllZEVraVVGMG1zM2tKNEZtT0F3\nQlQ1MmJqa3dtQTRzSjdFPQ0uBAAAAAAABi5GADBEAiAPFsiQ6_rk587mMV5H3Wbr6SXBNRcCMSgo\np1AC4KcfWgIgCznX-Tp1jBc7XVgpVCDzg85c73_TjnaPmMhcN0Jr7A4\u003d\n","assertionScheme":"UAFV1TLV"}],"fcParams":"eyJhcHBJRCI6Imh0dHBzOi8vMTkyLjE2OC4xLjI3Ojk0NDMvZmlkby92MS90cnVzdGVkZmFjZXRz\nIiwiY2hhbGxlbmdlIjoiSkRKaEpERXdKR1pMYkRoVVVHeHZUM0JFWTBjeU1ETllNVzkyT1dVIiwi\nY2hhbm5lbEJpbmRpbmciOnt9LCJmYWNldElEIjoiYW5kcm9pZDphcGsta2V5LWhhc2g6V2dud2RL\nRmZPcUg0TUFxRWgzM0s2RF83SlJ0QnBxNWc0Y2hrRHZ3Ymd6VVx1MDAzZCJ9\n","header":{"appID":"https://192.168.1.27:9443/fido/v1/trustedfacets","op":"Auth","serverData":"N3U2d1FpbFdwM3VJRm5SQlk3QlpKU0ZhYW5RRzRsNTJOVDNydVpoSkdxYy5NVFV5TnpVeU9EZzBPREExTncuU2tSS2FFcEVSWGRLUjFwTVlrUm9WVlZIZUhaVU0wSkZXVEJqZVUxRVRsbE5Wemt5VDFkVg","upv":{"major":1,"minor":0}}}]
+KeyID bytes: [B@3ec03eee
+Hibernate: 
+    select
+        registrati0_.id as id1_3_,
+        registrati0_.authenticator as authenti2_3_,
+        registrati0_.record as record3_3_,
+        registrati0_.timestamp as timestam4_3_ 
+    from
+        REGISTRATIONRECORD registrati0_ 
+    where
+        registrati0_.authenticator=?
+28-May-2018 17:34:11.014 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.ops.AuthenticationResponseProcessing.processAssertions [!!!COUNTERS!!!]received counter: 0
+28-May-2018 17:34:11.014 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.ops.AuthenticationResponseProcessing.processAssertions [!!!COUNTERS!!!]stored counter: 0
+Hibernate: 
+    select
+        registrati0_.id as id1_3_,
+        registrati0_.authenticator as authenti2_3_,
+        registrati0_.record as record3_3_,
+        registrati0_.timestamp as timestam4_3_ 
+    from
+        REGISTRATIONRECORD registrati0_ 
+    where
+        registrati0_.authenticator=?
+Hibernate: 
+    update
+        REGISTRATIONRECORD 
+    set
+        authenticator=?,
+        record=?,
+        timestamp=? 
+    where
+        id=?
+28-May-2018 17:34:11.120 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.util.ResponseHelper.getAlgAndEncoding  : SignatureAlgAndEncoding : UAF_ALG_SIGN_SECP256R1_ECDSA_SHA256_DER
+28-May-2018 17:34:11.120 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.util.ResponseHelper.verifySignature  : pub 		   : MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEofNbVuzW2OSURNhQBz7-KbZq_2Hno79Lx8AEwlKMWVRz6U5gs5cXIJVLztUuClqUyYxQLw0evDsRYQmUAIbS6w
+28-May-2018 17:34:11.120 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.util.ResponseHelper.verifySignature  : dataForSigning : BD6CAAsuCQBFQkEwIzAwMDEOLgUAAAABAgAPLggA3M1V7azbAxIKLiAApDL_4V7n14mGS5FvtfbwN0GFP6o7dbbM67PgKxRtgvIQLgAACS4sAF84T09LWWpEeWVkRWtpVUYwbXMza0o0Rm1PQXdCVDUyYmprd21BNHNKN0U9DS4EAAAAAAA
+28-May-2018 17:34:11.120 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.util.ResponseHelper.verifySignature  : signature 	   : MEQCIA8WyJDr-uTnzuYxXkfdZuvpJcE1FwIxKCinUALgpx9aAiALOdf5OnWMFztdWClUIPODzlzvf9OOdo-YyFw3QmvsDg
+28-May-2018 17:34:11.137 INFO [http-nio-8080-exec-4] eu.recred.fido.uaf.crypto.KeyCodec.getKeyAsRawBytes Raw key length:65
+Hibernate: 
+    insert 
+    into
+        AUTHENTICATIONID
+        (id, authenticationId, timestamp, username) 
+    values
+        (null, ?, ?, ?)
+28-May-2018 17:34:11.261 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.controller.FidoUafAuthenticationController.getResponse RESPONSE: [{"AAID":"EBA0#0001","KeyID":"XzhPT0tZakR5ZWRFa2lVRjBtczNrSjRGbU9Bd0JUNTJiamt3bUE0c0o3RT0","deviceId":"114193a58cda6538","username":"lights","status":"1200","timestamp":"1527528850900","authenticationId":"fido_auth_id_R8CnWa6TFJNPtmZI"}]
+28-May-2018 17:34:11.261 INFO [http-nio-8080-exec-4] eu.recred.fidouafsvc.controller.FidoUafAuthenticationController.getResponse ***-----END AUTH RESPONSE-----***

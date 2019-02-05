@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/*
+* Authenticators to be deregistered.
+*/
+
 public class DeregisterAuthenticator {
 	public String aaid;
 	public String keyID;

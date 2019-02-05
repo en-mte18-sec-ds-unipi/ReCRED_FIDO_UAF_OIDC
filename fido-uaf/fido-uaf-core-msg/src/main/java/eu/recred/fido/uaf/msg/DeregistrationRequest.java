@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/*
+* Deregistration request.
+*/
+
 public class DeregistrationRequest {
 	public OperationHeader header;
 	public DeregisterAuthenticator[] authenticators;

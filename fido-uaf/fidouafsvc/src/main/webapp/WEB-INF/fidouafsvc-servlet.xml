@@ -13,5 +13,21 @@
 
 	<!-- context:component-scan base-package: This is the 'root' package into which spring will search for components-->
 	<context:component-scan base-package="eu.recred.fidouafsvc" />
-	<mvc:annotation-driven />
+	<context:property-placeholder location="classpath:application.properties"/>
+	
+	<bean id="contentNegotiationManager"
+    class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+    <property name="favorPathExtension" value="false" />
+    <property name="favorParameter" value="true" />
+    <property name="mediaTypes">
+        <value>
+            json=application/json
+            xml=application/xml
+        </value>
+    </property>
+</bean>
+	
+	<mvc:annotation-driven  content-negotiation-manager="contentNegotiationManager">
+	<mvc:path-matching suffix-pattern="false" registered-suffixes-only="true" />
+	</mvc:annotation-driven>
   </beans>

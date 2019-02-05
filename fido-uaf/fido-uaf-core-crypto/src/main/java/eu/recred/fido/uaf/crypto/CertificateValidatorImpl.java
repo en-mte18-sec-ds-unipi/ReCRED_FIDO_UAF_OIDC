@@ -1,14 +1,14 @@
 package eu.recred.fido.uaf.crypto;
 
-import org.bouncycastle.jce.interfaces.ECPublicKey;
-import org.bouncycastle.util.encoders.Base64;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.bouncycastle.jce.interfaces.ECPublicKey;
+import org.bouncycastle.util.encoders.Base64;
 
 public class CertificateValidatorImpl implements CertificateValidator {
 

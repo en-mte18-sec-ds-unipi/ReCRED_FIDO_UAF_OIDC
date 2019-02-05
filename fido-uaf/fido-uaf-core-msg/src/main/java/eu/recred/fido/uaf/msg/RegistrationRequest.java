@@ -16,6 +16,10 @@
 
 package eu.recred.fido.uaf.msg;
 
+/**
+* RegistrationRequest contains a single, versioned, registration request.
+*/
+
 public class RegistrationRequest {
 	public OperationHeader header;
 	public String challenge;
